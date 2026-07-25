@@ -30,7 +30,7 @@ RUN pip install --no-cache-dir -e .
 
 # Build the texgen native extensions
 RUN cd hy3dgen/texgen/custom_rasterizer && python3 setup.py install
-RUN cd hy3dgen/texgen/differentiable_renderer && bash compile_mesh_painter.sh
+RUN cd hy3dgen/texgen/differentiable_renderer && python3 setup.py install
 
 # RunPod worker SDK + B2 (S3-compatible) client + mesh loading
 RUN pip install --no-cache-dir runpod boto3 trimesh pillow
