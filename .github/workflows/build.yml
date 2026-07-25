@@ -9,6 +9,18 @@ jobs:
   build-and-push:
     runs-on: ubuntu-latest
     steps:
+      # Free up disk space on the runner first — this image is large, and
+      # GitHub's default runners don't have much room to spare out of the box.
+      - name: Free disk space
+        uses: jlumbroso/free-disk-space@main
+        with:
+          tool-cache: true
+          android: true
+          dotnet: true
+          haskell: true
+          large-packages: true
+          swap-storage: false
+
       - name: Checkout
         uses: actions/checkout@v4
 
