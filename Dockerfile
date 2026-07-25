@@ -4,7 +4,8 @@ FROM nvidia/cuda:12.4.1-devel-ubuntu22.04
 
 ENV DEBIAN_FRONTEND=noninteractive \
     PYTHONUNBUFFERED=1 \
-    CUDA_HOME=/usr/local/cuda
+    CUDA_HOME=/usr/local/cuda \
+    TORCH_CUDA_ARCH_LIST="8.0;8.6;8.9;9.0"
 
 # System dependencies, incl. what custom_rasterizer / differentiable_renderer need to compile
 RUN apt-get update && apt-get install -y --no-install-recommends \
