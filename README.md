@@ -1,6 +1,6 @@
-# Hunyuan3D-Paint texture-only RunPod image
+# Hunyuan3D-Paint texture-only image
 
-Retextures an existing mesh (e.g. your TRELLIS.2 GLB output) using Hunyuan3D-2's
+Retextures an existing mesh using Hunyuan3D-2's
 paint stage only — shape generation is skipped entirely.
 
 ## What's in here
