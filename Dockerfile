@@ -32,14 +32,18 @@ RUN pip install --no-cache-dir -e .
 RUN cd hy3dgen/texgen/custom_rasterizer && python3 setup.py install
 RUN cd hy3dgen/texgen/differentiable_renderer && python3 setup.py install
 
-# RunPod worker SDK + B2 (S3-compatible) client + mesh loading + HF download helper
-RUN pip install --no-cache-dir runpod boto3 trimesh pillow huggingface_hub
+# RunPod worker SDK + B2 (S3-compatible) client + mesh loading
+RUN pip install --no-cache-dir runpod boto3 trimesh pillow
 
-# Bake the Hunyuan3D-2 texgen weights into the image so workers don't
-# download them on cold start. Uses snapshot_download (file download only)
-# rather than instantiating the pipeline, since the pipeline constructor
-# moves weights onto a GPU -- which doesn't exist on this build machine.
-RUN python -c "from huggingface_hub import snapshot_download; snapshot_download('tencent/Hunyuan3D-2')"
+# Bake ONLY the texture-related weights into the image -- skip the
+# shape-generation (hunyuan3d-dit-v2-0) weights entirely, since we never use
+# them. This keeps the image small enough to build on GitHub's runner.
+# Uses snapshot_download (file download only, no GPU touch) rather than
+# instantiating the pipeline.
+RUN pip install --no-cache-dir huggingface_hub && \
+    python -c "\
+from huggingface_hub import snapshot_download; \
+snapshot_download('tencent/Hunyuan3D-2', allow_patterns=['hunyuan3d-delight-v2-0/*', 'hunyuan3d-paint-v2-0/*'])"
 
 # RunPod handler
 COPY handler.py /workspace/Hunyuan3D-2/handler.py
